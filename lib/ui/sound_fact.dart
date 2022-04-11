@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kaamelott_facts/blocs/fact_cubit.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:kaamelott_facts/repository/preference_repository.dart';
 
 import '../models/fact.dart';
@@ -9,11 +9,11 @@ import '../models/fact.dart';
 class SoundFact extends StatelessWidget {
   const SoundFact({Key? key}) : super(key: key);
 
-  Future<AudioPlayer> playLocalAsset(String file) async {
-    AudioCache cache = AudioCache();
-    //At the next line, DO NOT pass the entire reference such as assets/yes.mp3. This will not work.
-    //Just pass the file name only.
-    return await cache.play(file);
+  Future<int> playApiSound(String fileName) async{
+    AudioPlayer audioPlayer = AudioPlayer();
+    await audioPlayer.setUrl("http://192.168.1.20:10448/api/KaamelottFact/facts/sound/$fileName"); // prepare the player with this audio but do not start playing
+    await audioPlayer.play();
+    return 1;
   }
 
   @override
@@ -48,7 +48,7 @@ class SoundFact extends StatelessWidget {
                                 title: Text(fact.title),
                                 trailing: IconButton(
                                   icon: const Icon(Icons.play_circle_fill, color: Colors.green),
-                                  onPressed: () async => { await playLocalAsset(fact.file) },
+                                  onPressed: () async => { await playApiSound(fact.file) },
                                 ),
                               );
                             },
@@ -60,21 +60,6 @@ class SoundFact extends StatelessWidget {
                         ),
                       );
                     }),
-                ElevatedButton(
-                    onPressed: (){
-                    },
-                    child: const Text('▶')
-                ),
-                ElevatedButton(
-                    onPressed: (){
-                    },
-                    child: const Text('New')
-                ),
-                ElevatedButton(
-                    onPressed: (){
-                    },
-                    child: const Text('⭐')
-                ),
               ]
           ),
         )

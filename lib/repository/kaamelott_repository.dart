@@ -6,15 +6,26 @@ import '../models/fact.dart';
 class KaamelottRepository {
  KaamelottRepository();
 
+ Future<String> getSound(String query) async {
+   Response response;
+   response = await get(
+       Uri.parse('http://192.168.1.20:10448/api/KaamelottFact/facts/sound/$query'));
+   if (response.statusCode == 200) {
+     return response.body;
+   }
+   else{
+     return "";
+   }
+ }
  Future<List<Fact>> fetchFact(String query) async {
    Response response;
    if (query == '') {
      response = await get(
-         Uri.parse('http://172.20.10.11:10448/api/KaamelottFact'));
+         Uri.parse('http://192.168.1.20:10448/api/KaamelottFact'));
    }
    else {
      response = await get(
-         Uri.parse('http://172.20.10.11:10448/api/KaamelottFact/facts/$query'));
+         Uri.parse('http://192.168.1.20:10448/api/KaamelottFact/facts/$query'));
    }
 
    if (response.statusCode == 200) {

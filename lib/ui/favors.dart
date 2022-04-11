@@ -1,8 +1,9 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:kaamelott_facts/blocs/fact_cubit.dart';
 import 'package:kaamelott_facts/repository/preference_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../blocs/fact_cubit.dart';
 import '../models/fact.dart';
@@ -12,30 +13,32 @@ class Favors extends StatefulWidget {
 
   @override
   State<Favors> createState() => _FavorsState();
-
 }
 
 class _FavorsState extends State<Favors> {
   final PreferenceRepository _preferenceRepository = PreferenceRepository();
-  late final List<String>? favors;
-  @override
+  late List<String>? favors;
 
+  @override
   void initState() {
-    _preferenceRepository.loadFavorsId().then((value) =>
-        setState((){favors = value;}));
     super.initState();
+    _preferenceRepository.loadFavorsId().whenComplete(() =>
+        setState((){}));
   }
 
-  Future<AudioPlayer> playLocalAsset(String file) async {
-    AudioCache cache = AudioCache();
-    //At the next line, DO NOT pass the entire reference such as assets/yes.mp3. This will not work.
-    //Just pass the file name only.
-    return await cache.play(file);
+  Future<void> initializePreference() async{
+    var prefs = await SharedPreferences.getInstance();
+  }
+
+  Future<int> playApiSound(String fileName) async{
+    AudioPlayer audioPlayer = AudioPlayer();
+    await audioPlayer.setUrl("http://192.168.1.20:10448/api/KaamelottFact/facts/sound/$fileName"); // prepare the player with this audio but do not start playing
+    await audioPlayer.play();
+    return 1;
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: BlocBuilder<FactCubit, List<Fact>>(
           builder: (context, state){
@@ -55,7 +58,7 @@ class _FavorsState extends State<Favors> {
                     title: Text(fact.title),
                     trailing: IconButton(
                       icon: const Icon(Icons.play_circle_fill, color: Colors.green),
-                      onPressed: () async => { await playLocalAsset(fact.file) },
+                      onPressed: () async => { await playApiSound(fact.title) },
                     ),
                   );
                 },
@@ -67,8 +70,6 @@ class _FavorsState extends State<Favors> {
               ),
             );
           }),
-
-
     );
   }
 }
