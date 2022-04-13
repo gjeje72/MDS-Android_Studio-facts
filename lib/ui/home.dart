@@ -51,7 +51,7 @@ class Home extends StatelessWidget {
                         'filter':'',
                       });
                 },
-                  child: const Text('Aléatoire')
+                  child: const Text('Tous')
               ),
             ElevatedButton(
                   onPressed: (){

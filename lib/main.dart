@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kaamelott_facts/repository/kaamelott_repository.dart';
+import 'package:kaamelott_facts/repository/preference_repository.dart';
 import 'package:kaamelott_facts/ui/favors.dart';
 import 'package:kaamelott_facts/ui/home.dart';
 import 'package:kaamelott_facts/ui/sound_fact.dart';
@@ -8,10 +9,13 @@ import 'package:provider/provider.dart';
 import 'blocs/fact_cubit.dart';
 
 void main() {
-
+  final PreferenceRepository preferenceRepository = PreferenceRepository();
   final KaamelottRepository kaamelottRepository = KaamelottRepository();
   final FactCubit factCubit = FactCubit(kaamelottRepository);
+
   factCubit.loadFacts('');
+  preferenceRepository.sharedPrefInit();
+
   runApp(
       MultiProvider(
         providers: [

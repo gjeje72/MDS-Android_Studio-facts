@@ -1,15 +1,17 @@
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:kaamelott_facts/models/constants.dart' as globals;
 
 import '../models/fact.dart';
 
 class KaamelottRepository {
+
  KaamelottRepository();
 
  Future<String> getSound(String query) async {
    Response response;
    response = await get(
-       Uri.parse('http://192.168.1.20:10448/api/KaamelottFact/facts/sound/$query'));
+       Uri.parse('${globals.globalUrl}:10448/api/KaamelottFact/facts/sound/$query'));
    if (response.statusCode == 200) {
      return response.body;
    }
@@ -21,11 +23,11 @@ class KaamelottRepository {
    Response response;
    if (query == '') {
      response = await get(
-         Uri.parse('http://192.168.1.20:10448/api/KaamelottFact'));
+         Uri.parse('${globals.globalUrl}:10448/api/KaamelottFact'));
    }
    else {
      response = await get(
-         Uri.parse('http://192.168.1.20:10448/api/KaamelottFact/facts/$query'));
+         Uri.parse('${globals.globalUrl}:10448/api/KaamelottFact/facts/$query'));
    }
 
    if (response.statusCode == 200) {

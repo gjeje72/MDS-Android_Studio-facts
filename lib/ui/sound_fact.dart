@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kaamelott_facts/blocs/fact_cubit.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:kaamelott_facts/repository/preference_repository.dart';
-
+import 'package:kaamelott_facts/models/constants.dart' as globals;
 import '../models/fact.dart';
 
 class SoundFact extends StatelessWidget {
@@ -11,7 +11,7 @@ class SoundFact extends StatelessWidget {
 
   Future<int> playApiSound(String fileName) async{
     AudioPlayer audioPlayer = AudioPlayer();
-    await audioPlayer.setUrl("http://192.168.1.20:10448/api/KaamelottFact/facts/sound/$fileName"); // prepare the player with this audio but do not start playing
+    await audioPlayer.setUrl("${globals.globalUrl}:10448/api/KaamelottFact/facts/sound/$fileName"); // prepare the player with this audio but do not start playing
     await audioPlayer.play();
     return 1;
   }
@@ -20,7 +20,7 @@ class SoundFact extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, dynamic> args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     final String filter = args['filter'];
-    final String title = filter != '' ? filter : 'Aléatoire';
+    final String title = filter != '' ? filter : 'Tous';
     final PreferenceRepository _preferenceRepository = PreferenceRepository();
     return Scaffold(
         appBar: AppBar(title: Text(title)),
@@ -32,7 +32,7 @@ class SoundFact extends StatelessWidget {
               children: [
                 BlocBuilder<FactCubit, List<Fact>>(
                     builder: (context, state){
-                      state = state.where((e) => e.character == filter).toList();
+                      state = state.where((e) => e.character.contains(filter)).toList();
                       return Expanded(
                         child: ListView.separated(
                             itemCount: state.length,
@@ -42,7 +42,7 @@ class SoundFact extends StatelessWidget {
                                 leading: IconButton(
                                   icon: const Icon(Icons.star_border_outlined),
                                   onPressed: () => {
-                                    _preferenceRepository.saveFavorsId(fact.id)
+                                    _preferenceRepository.saveNewFavors(fact)
                                   },
                                 ),
                                 title: Text(fact.title),

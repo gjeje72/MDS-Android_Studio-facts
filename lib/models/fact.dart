@@ -25,4 +25,22 @@ class Fact {
       map['file']
     );
   }
+
+  static Map<String, dynamic> toMap(Fact fact) => {
+    'id': fact.id,
+    'title': fact.title,
+    'character': fact.character,
+    'file': fact.file
+  };
+
+  static String encode(List<Fact> facts) => json.encode(
+    facts
+        .map<Map<String, dynamic>>((fact) => Fact.toMap(fact))
+        .toList(),
+  );
+
+  static List<Fact> decode(String facts) =>
+      (json.decode(facts) as List<dynamic>)
+          .map<Fact>((item) => Fact.fromJson(item))
+          .toList();
 }

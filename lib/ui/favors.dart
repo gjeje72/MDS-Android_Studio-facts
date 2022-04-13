@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:kaamelott_facts/blocs/fact_cubit.dart';
 import 'package:kaamelott_facts/repository/preference_repository.dart';
+import 'package:kaamelott_facts/models/constants.dart' as globals;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../blocs/fact_cubit.dart';
@@ -17,13 +16,18 @@ class Favors extends StatefulWidget {
 
 class _FavorsState extends State<Favors> {
   final PreferenceRepository _preferenceRepository = PreferenceRepository();
-  late List<String>? favors;
+  List<Fact> favors = List<Fact>.empty();
 
   @override
   void initState() {
     super.initState();
-    _preferenceRepository.loadFavorsId().whenComplete(() =>
-        setState((){}));
+    }
+
+  Future<void> getPrefs() async {
+    _preferenceRepository.loadFavors().then((value) {
+      favors = value;
+      setState((){});
+    });
   }
 
   Future<void> initializePreference() async{
@@ -32,7 +36,7 @@ class _FavorsState extends State<Favors> {
 
   Future<int> playApiSound(String fileName) async{
     AudioPlayer audioPlayer = AudioPlayer();
-    await audioPlayer.setUrl("http://192.168.1.20:10448/api/KaamelottFact/facts/sound/$fileName"); // prepare the player with this audio but do not start playing
+    await audioPlayer.setUrl("${globals.globalUrl}:10448/api/KaamelottFact/facts/sound/$fileName"); // prepare the player with this audio but do not start playing
     await audioPlayer.play();
     return 1;
   }
@@ -40,36 +44,29 @@ class _FavorsState extends State<Favors> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<FactCubit, List<Fact>>(
-          builder: (context, state){
-            state = state.where((e) => favors?.contains(e.id.toString()) ?? false).toList();
-            return Expanded(
-              child: ListView.separated(
-                itemCount: state.length,
-                itemBuilder: (BuildContext context, int index){
-                  Fact fact = state[index];
-                  return ListTile(
+      appBar: AppBar(title: const Text('favoris')),
+      body: favors.isNotEmpty
+          ? ListView.builder(
+              itemCount: favors.length,
+              itemBuilder: (BuildContext context, int index){
+                return ListTile(
                     leading: IconButton(
-                      icon: const Icon(Icons.star),
-                      onPressed: () => {
-                        _preferenceRepository.saveFavorsId(fact.id)
-                      },
-                    ),
-                    title: Text(fact.title),
+                        icon: const Icon(Icons.star),
+                        onPressed: () => {
+                          _preferenceRepository.saveNewFavors(favors[index])
+                          },
+                        ),
+                    title: Text(favors[index].title),
                     trailing: IconButton(
-                      icon: const Icon(Icons.play_circle_fill, color: Colors.green),
-                      onPressed: () async => { await playApiSound(fact.title) },
-                    ),
+                        icon: const Icon(Icons.play_circle_fill, color: Colors.green),
+                        onPressed: () async => { await playApiSound(favors[index].file) },
+                    )
                   );
-                },
-                separatorBuilder: (BuildContext context, int index){
-                  return const Divider(
-                    height: 0,
-                  );
-                },
-              ),
-            );
-          }),
+              }
+            )
+          : FloatingActionButton(onPressed: () async => await getPrefs()),
     );
   }
 }
+
+
