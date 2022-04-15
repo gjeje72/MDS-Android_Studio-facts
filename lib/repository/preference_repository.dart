@@ -4,23 +4,6 @@ import '../models/fact.dart';
 
 class PreferenceRepository {
 
-  /// Initializes shared_preference
-  void sharedPrefInit() async {
-    try {
-      /// Checks if shared preference exist
-      Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-      final SharedPreferences prefs = await _prefs;
-      prefs.getString("app-name");
-    } catch (err) {
-      /// setMockInitialValues initiates shared preference
-      /// Adds app-name
-      SharedPreferences.setMockInitialValues({});
-      Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-      final SharedPreferences prefs = await _prefs;
-      prefs.setString("app-name", "my-app");
-    }
-  }
-
   Future<void> saveNewFavors(Fact fact) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var facts = await loadFavors();
@@ -31,7 +14,7 @@ class PreferenceRepository {
 
   Future<List<Fact>> loadFavors() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var factsString = await prefs.getString('favors');
+    var factsString = prefs.getString('favors');
     if(factsString != null){
       final List<Fact> facts = Fact.decode(factsString);
       return facts;

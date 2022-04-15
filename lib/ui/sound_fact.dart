@@ -33,7 +33,7 @@ class _SoundFactState extends State<SoundFact> {
     final String title = filter != '' ? filter : 'Tous';
     return Scaffold(
         backgroundColor: Colors.brown[300],
-        appBar: AppBar(title: Text(title), backgroundColor: Colors.brown),
+        appBar: AppBar(title: Text(title)),
         body: Padding(
           padding: const EdgeInsets.all(50.0),
           child: Column(
@@ -73,7 +73,7 @@ class _SoundFactState extends State<SoundFact> {
                                 title: Text(fact.title),
                                 trailing: IconButton(
                                   icon: isPlaying == index
-                                      ? Icon(Icons.pause_circle_filled , color: Colors.green.shade100)
+                                      ? Icon(Icons.pause_circle_filled , color: Colors.green.shade300)
                                       : Icon(Icons.play_circle_fill, color: Colors.green.shade300),
                                   onPressed: () async {
                                     setState(() {

@@ -17,14 +17,13 @@ class _FavorsState extends State<Favors> {
   List<Fact> favors = List<Fact>.empty();
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     Provider.of<PreferenceRepository>(context, listen: false).loadFavors().then((value) {
       favors = value;
       setState((){});
     });
   }
-
 
   Future<int> playApiSound(String fileName) async{
     AudioPlayer audioPlayer = AudioPlayer();
@@ -40,7 +39,7 @@ class _FavorsState extends State<Favors> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.brown[300],
-      appBar: AppBar(title: const Text('favoris'),backgroundColor: Colors.brown,),
+      appBar: AppBar(title: const Text('favoris')),
       body: favors.isNotEmpty
           ? Padding(
             padding: const EdgeInsets.all(50.0),
@@ -60,8 +59,8 @@ class _FavorsState extends State<Favors> {
                       title: Text(favors[index].title),
                       trailing: IconButton(
                           icon: isPlaying == index
-                              ? const Icon(Icons.pause_circle_filled , color: Colors.green)
-                              : const Icon(Icons.play_circle_fill, color: Colors.green),
+                              ? Icon(Icons.pause_circle_filled , color: Colors.green.shade300)
+                              : Icon(Icons.play_circle_fill, color: Colors.green.shade300),
                         onPressed: () async {
                           setState(() {
                             playApiSound(favors[index].file);

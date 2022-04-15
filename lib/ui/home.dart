@@ -9,7 +9,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.brown[300],
-      appBar: AppBar(title: const Text('Kaamelott Facts'), backgroundColor: Colors.brown),
+      appBar: AppBar(title: const Text('Kaamelott Facts')),
       body: Padding(
         padding: const EdgeInsets.all(50.0),
         child: Column(
@@ -21,7 +21,6 @@ class Home extends StatelessWidget {
             CustomButton('/fact', 'Léodagan', 'leodagan.webp', Colors.green.shade300),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.brown,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)
                 ),
@@ -35,7 +34,6 @@ class Home extends StatelessWidget {
             ),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.brown,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)
                   ),

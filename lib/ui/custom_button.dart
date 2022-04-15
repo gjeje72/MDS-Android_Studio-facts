@@ -28,12 +28,13 @@ class CustomButton extends StatelessWidget {
                     },
                     child: Text(filter),
                 style: ElevatedButton.styleFrom(
+                  alignment: Alignment.centerRight,
                   primary: backgroundColor,
                   fixedSize: const Size(250, 20),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)
                       ),
-                  padding: const EdgeInsets.only(left: 50),
+                  padding: const EdgeInsets.only(right: 35),
                 )
                 ),
               Positioned(
