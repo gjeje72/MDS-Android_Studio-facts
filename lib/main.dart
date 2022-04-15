@@ -13,7 +13,7 @@ void main() {
   final KaamelottRepository kaamelottRepository = KaamelottRepository();
   final FactCubit factCubit = FactCubit(kaamelottRepository);
 
-  factCubit.loadFacts('');
+  factCubit.loadFacts();
   preferenceRepository.sharedPrefInit();
 
   runApp(
@@ -21,6 +21,7 @@ void main() {
         providers: [
           Provider<FactCubit>(create: (_) => factCubit),
           Provider<KaamelottRepository>(create: (_) => kaamelottRepository),
+          Provider<PreferenceRepository>(create: (_) => preferenceRepository),
         ],
         child: MyApp(),
   ));

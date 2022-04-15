@@ -4,13 +4,11 @@ class Fact {
   String title;
   String character;
   String file;
-  int id;
 
-  Fact(this.id, this.title, this.character, this.file);
+  Fact(this.title, this.character, this.file);
 
   String toJson(){
     return jsonEncode({
-      'id': id,
       'title': title,
       'character': character,
       'file': file
@@ -19,7 +17,6 @@ class Fact {
 
   factory Fact.fromJson(Map<String, dynamic> map){
     return Fact(
-      map['id'],
       map['title'],
       map['character'],
       map['file']
@@ -27,7 +24,6 @@ class Fact {
   }
 
   static Map<String, dynamic> toMap(Fact fact) => {
-    'id': fact.id,
     'title': fact.title,
     'character': fact.character,
     'file': fact.file

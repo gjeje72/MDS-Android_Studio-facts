@@ -11,7 +11,7 @@ class KaamelottRepository {
  Future<String> getSound(String query) async {
    Response response;
    response = await get(
-       Uri.parse('${globals.globalUrl}:10448/api/KaamelottFact/facts/sound/$query'));
+       Uri.parse('${globals.globalUrl}/api/KaamelottFact/facts/sound/$query'));
    if (response.statusCode == 200) {
      return response.body;
    }
@@ -19,16 +19,9 @@ class KaamelottRepository {
      return "";
    }
  }
- Future<List<Fact>> fetchFact(String query) async {
-   Response response;
-   if (query == '') {
-     response = await get(
-         Uri.parse('${globals.globalUrl}:10448/api/KaamelottFact'));
-   }
-   else {
-     response = await get(
-         Uri.parse('${globals.globalUrl}:10448/api/KaamelottFact/facts/$query'));
-   }
+ Future<List<Fact>> fetchFact() async {
+   Response response = await get(
+         Uri.parse('${globals.globalUrl}/api/KaamelottFact/facts/all'));
 
    if (response.statusCode == 200) {
      List<Fact> facts = [];

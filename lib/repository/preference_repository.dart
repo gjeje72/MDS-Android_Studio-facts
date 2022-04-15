@@ -38,4 +38,12 @@ class PreferenceRepository {
     }
     return List<Fact>.empty(growable: true);
   }
+
+  Future<void> removeFavors(Fact fact) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var facts = await loadFavors();
+    facts.removeWhere((element) => element.title == fact.title);
+    final String encodedData = Fact.encode(facts);
+    await prefs.setString('favors', encodedData);
+  }
 }

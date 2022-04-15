@@ -8,8 +8,8 @@ class FactCubit extends Cubit<List<Fact>>
   FactCubit(this._repository) : super([]);
   final KaamelottRepository _repository;
 
-  Future<void> loadFacts(String query) async {
-    final List<Fact> facts = await _repository.fetchFact(query);
+  Future<void> loadFacts() async {
+    final List<Fact> facts = await _repository.fetchFact();
     emit(facts);
   }
 }
