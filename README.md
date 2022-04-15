@@ -1,6 +1,6 @@
 # kaamelott_facts
 
-A new Flutter project.
+A new Flutter project from Jerome G.
 
 ## Getting Started
 
