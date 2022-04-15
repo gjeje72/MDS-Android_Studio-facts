@@ -1,6 +1,7 @@
 # kaamelott_facts
 
 A new Flutter project from Jerome G.
+By default API is stopped. Please call me to start API.
 
 ## Getting Started
 
